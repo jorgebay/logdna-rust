@@ -25,6 +25,7 @@ type BufFut = Pin<Box<dyn Future<Output = Option<Reusable<BytesMut>>> + std::mar
 // TODO: expose size when const generics become available
 #[derive(PartialEq)]
 pub struct SegmentedBuf<T> {
+    _c: countme::Count<Self>,
     bufs: SmallVec<[T; 4]>,
     pos: usize,
     offset: usize,
@@ -36,6 +37,7 @@ pub struct SegmentedBuf<T> {
 impl<T> SegmentedBuf<T> {
     pub fn new() -> Self {
         Self {
+            _c: countme::Count::new(),
             bufs: SmallVec::new(),
             pos: 0,
             offset: 0,
@@ -47,6 +49,7 @@ impl<T> SegmentedBuf<T> {
 
     pub fn with_segment_size(segment_size: usize) -> Self {
         Self {
+            _c: countme::Count::new(),
             bufs: SmallVec::new(),
             pos: 0,
             offset: 0,
